@@ -1,39 +1,56 @@
 import React, { useEffect, useState } from "react";
 import "./CountryDetails.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function CountryDetails() {
   const params = useParams();
   const countryName = params.country;
-  console.log(params);
 
   const [countryData, setCountryData] = useState(null);
-  const [notFound, setNotFound] = useState(false)
+  const [notFound, setNotFound] = useState(false);
+
+  console.log(countryData?.borders);
 
   useEffect(() => {
     fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
       .then((res) => res.json())
       .then(([data]) => {
-        console.log(data),
-          setCountryData({
-            name: data.name.common,
-            nativeName: Object.values(data.name.nativeName)[0].common,
-            population: data.population,
-            topLevelDomain: data.tld,
-            capital: data.capital,
-            subRegion: data.subregion,
-            flag: data.flags.svg,
-            currencies: Object.values(data.currencies)
-              .map((currency) => currency.name)
-              .join(", "),
-            languages: Object.values(data.languages).join(", "),
-          });
-      })
-      .catch((error) => {setNotFound(true)});
-  }, []);
+        setCountryData({
+          name: data.name.common,
+          nativeName: Object.values(data.name.nativeName)[0].common,
+          population: data.population,
+          topLevelDomain: data.tld,
+          capital: data.capital,
+          subRegion: data.subregion,
+          flag: data.flags.svg,
+          currencies: Object.values(data.currencies)
+            .map((currency) => currency.name)
+            .join(", "),
+          languages: Object.values(data.languages).join(", "),
+          borders: [],
+        });
 
-  if(notFound) {
-    return <div>Not Found</div>
+        if (!data.borders) {
+          data.borders = [];
+        }
+
+        Promise.all(
+          data.borders.map((border) => {
+            return fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+              .then((res) => res.json())
+              .then(([borderCountry]) => borderCountry.name.common);
+          })
+        ).then((borders) => {
+          setCountryData((prevState) => ({ ...prevState, borders }));
+        });
+      })
+      .catch((error) => {
+        setNotFound(true);
+      });
+  }, [countryName]);
+
+  if (notFound) {
+    return <div>Not Found</div>;
   }
 
   return countryData === null ? (
@@ -90,9 +107,17 @@ export default function CountryDetails() {
                 <span className="languages">{countryData.languages}</span>
               </p>
             </div>
-            <div className="border-countries">
-              <b>Border Countries:</b>&nbsp;
-            </div>
+
+            {countryData.borders.length !== 0 && (
+              <div className="border-countries">
+                <b>Border Countries: </b>&nbsp;{" "}
+                {countryData.borders.map((border) => (
+                  <Link key={border} to={`/${border}`}>
+                    {border}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
