@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CountryCard from "./CountryCard";
+import CountriesListShimmer from "./CountriesListShimmer";
 
 export default function CountriesList({ query }) {
   const [countriesData, setCountriesData] = useState([]);
@@ -12,19 +13,30 @@ export default function CountriesList({ query }) {
       });
   }, []);
 
-  const array = countriesData
-    .filter((country) => country.name.common.toLowerCase().includes(query))
-    .map((country) => {
-      return (
-        <CountryCard
-          key={country.name.common}
-          name={country.name.common}
-          flag={country.flags.svg}
-          population={country.population.toLocaleString()}
-          region={country.region}
-          capital={country.capital?.[0]}
-        />
-      );
-    });
-  return <div className="countries-container">{array}</div>;
+  return (
+    <>
+      {!countriesData.length ? (
+        <CountriesListShimmer />
+      ) : (
+        <div className="countries-container">
+          {countriesData
+            .filter((country) =>
+              country.name.common.toLowerCase().includes(query)
+            )
+            .map((country) => {
+              return (
+                <CountryCard
+                  key={country.name.common}
+                  name={country.name.common}
+                  flag={country.flags.svg}
+                  population={country.population.toLocaleString()}
+                  region={country.region}
+                  capital={country.capital?.[0]}
+                />
+              );
+            })}
+        </div>
+      )}
+    </>
+  );
 }
