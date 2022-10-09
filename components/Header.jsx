@@ -1,14 +1,8 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../hooks/useTheme";
 
-export default function Header({ theme }) {
-  const [isDark, setIsDark] = theme;
-
-  // if (isDark) {
-  //   document.body.classList.add("dark");
-  // } else {
-  //   document.body.classList.remove("dark");
-  // }
+export default function Header() {
+  const [isDark, setIsDark] = useTheme();
 
   return (
     <header className={`header-container ${isDark ? "dark" : ""}`}>
@@ -20,7 +14,7 @@ export default function Header({ theme }) {
           className="theme-changer"
           onClick={() => {
             setIsDark(!isDark);
-            localStorage.setItem("isDarkMode", !isDark);
+            localStorage.setItem(LOCAL_STORAGE_KEY, "isDarkMode", !isDark);
           }}
         >
           <i className={`fa-solid fa-${isDark ? "sun" : "moon"}`}></i>
