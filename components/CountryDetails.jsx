@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 
 import "./CountryDetails.css";
-import {
-  Link,
-  useLocation,
-  useParams,
-} from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 
 export default function CountryDetail() {
-
   const params = useParams();
   const { state } = useLocation();
   const countryName = params.country;
 
   const [countryData, setCountryData] = useState(null);
   const [notFound, setNotFound] = useState(false);
-  const [isDark] = useTheme()
+  const [isDark] = useTheme();
 
   function updateCountryData(data) {
     setCountryData({
@@ -56,17 +51,16 @@ export default function CountryDetail() {
     if (state) {
       updateCountryData(state);
       return;
-    } else {
-      fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
-        .then((res) => res.json())
-        .then(([data]) => {
-          updateCountryData(data);
-        })
-        .catch((err) => {
-          console.log(err);
-          setNotFound(true);
-        });
     }
+    fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
+      .then((res) => res.json())
+      .then(([data]) => {
+        updateCountryData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setNotFound(true);
+      });
   }, [countryName]);
 
   if (notFound) {
