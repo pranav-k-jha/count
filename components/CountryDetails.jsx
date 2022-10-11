@@ -13,7 +13,7 @@ export default function CountryDetail() {
   const [notFound, setNotFound] = useState(false);
   const [isDark] = useTheme();
 
-  function updateCountryData(data) {
+  async function updateCountryData(data) {
     setCountryData({
       name: data.name.common,
       nativeName: Object.values(data.name.nativeName)[0].common,
@@ -61,7 +61,7 @@ export default function CountryDetail() {
         console.log(err);
         setNotFound(true);
       });
-  }, [countryName]);
+  }, [countryName, state]);
 
   if (notFound) {
     return <div>Country Not Found</div>;
