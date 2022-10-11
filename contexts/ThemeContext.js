@@ -2,15 +2,15 @@ import { createContext, useState } from "react";
 
 export const ThemeContext = createContext();
 
-const LOCAL_STORAGE_KEY = "theme-changer";
-
-export function ThemeProvider({children}) {
+export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(
-    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY, "isDarkMode"))
+    JSON.parse(localStorage.getItem("LOCAL_STORAGE_KEY"))
   );
   return (
     <>
-      <ThemeContext.Provider value={[isDark, setIsDark]}>{children}</ThemeContext.Provider>
+      <ThemeContext.Provider value={[isDark, setIsDark]}>
+        {children}
+      </ThemeContext.Provider>
     </>
   );
 }

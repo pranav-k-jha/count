@@ -14,7 +14,7 @@ export default function Header() {
           className="theme-changer"
           onClick={() => {
             setIsDark(!isDark);
-            localStorage.setItem(LOCAL_STORAGE_KEY, "isDarkMode", !isDark);
+            localStorage.setItem("LOCAL_STORAGE_KEY", JSON.stringify("isDarkMode", !isDark));
           }}
         >
           <i className={`fa-solid fa-${isDark ? "sun" : "moon"}`}></i>
