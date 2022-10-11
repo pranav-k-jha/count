@@ -32,6 +32,7 @@ export default function CountriesList({ query }) {
                   population={country.population.toLocaleString()}
                   region={country.region}
                   capital={country.capital?.[0]}
+                  data={country}
                 />
               );
             })}
