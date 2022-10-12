@@ -31,6 +31,10 @@ a {
   text-decoration-line: none;
   color: inherit;
 }
+.flag-container {
+  height: 160px;
+  overflow: hidden;
+}
 
 .header-container {
   box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.1);
