@@ -13,7 +13,7 @@ export default function CountryDetail() {
   const [notFound, setNotFound] = useState(false);
   const [isDark] = useTheme();
 
-  async function updateCountryData(data) {
+  function updateCountryData(data) {
     setCountryData({
       name: data.name.common,
       nativeName: Object.values(data.name.nativeName)[0].common,
