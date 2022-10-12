@@ -13,7 +13,7 @@ export default function Home() {
     <main className={`${isDark ? "dark" : ""}`}>
       <div className="search-filter-container">
         <SearchBar setQuery={setQuery} onChange />
-        <SelectMenu />
+        <SelectMenu setQuery={setQuery}/>
       </div>
 
       <CountriesList query={query} />
