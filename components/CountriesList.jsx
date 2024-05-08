@@ -1,13 +1,16 @@
-import { useState } from "react";
-import countriesData from "../countriesData";
+import { useEffect, useState } from "react";
 import CountryCard from "./CountryCard";
 
-export default function CountriesList({query}) {
+export default function CountriesList({ query }) {
+  const [countriesData, setCountriesData] = useState([]);
 
-  const filteredCountries = countriesData.filter((country) =>
-    country.name.common.toLowerCase().includes(query)
-  );
-  console.log(filteredCountries);
+  useEffect(() => {
+    fetch("https://restcountries.com/v3.1/all")
+      .then((res) => res.json())
+      .then((data) => {
+        setCountriesData(data);
+      });
+  }, []);
 
   const array = countriesData
     .filter((country) => country.name.common.toLowerCase().includes(query))
